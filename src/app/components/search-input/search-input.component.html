@@ -1,0 +1,39 @@
+<div
+  #searchInputContainer
+  class="relative flex bg-white justify-center items-center max-h-10 pr-2 gap-0 border border-black rounded-lg focus-within:shadow-sm focus-within:shadow-gray-400"
+>
+  <!-- Search input -->
+  <input
+    type="text"
+    placeholder="Search.."
+    [(ngModel)]="searchInputs.searchTerm"
+    autofocus
+    required
+    minlength="2"
+    (keydown.enter)="onEmitSearchInputs(); onNavigateToSelectedTypePage()"
+    class="w-[70%] h-10 px-[1rem] bg-transparent text-gray-900 border-1 border-none rounded-l-lg focus:outline-none focus:border-none"
+  />
+
+  <!-- Drop down -->
+  <div
+    (click)="onToggleDropDown($event)"
+    class="dropdown relative h-10 w-[30%] border-l-[.2px] p-2 border-gray-800 bg-transparent cursor-pointer"
+  >
+    <span
+      class="dropdown cursor-pointer after:absolute after:w-0 after:h-0 after:border-l-[5px] after:border-l-transparent after:border-r-[5px] after:border-r-transparent after:border-t-[5px] after:border-t-black after:transform after:translate-y-[-50%] after:top-[50%] after:right-0"
+    >
+      {{ searchInputs.searchType }}
+    </span>
+  </div>
+  <div
+    *ngIf="isDropDownOpened"
+    class="group absolute w-[5rem] right-0 top-0 text-center translate-y-[41px] transition-[.4] bg-white border-[.1px] border-gray-400 rounded-lg overflow-hidden"
+  >
+    <span
+      (click)="onSelectSearchType(type)"
+      *ngFor="let type of searchTypes"
+      class="block p-1 hover:bg-slate-100 hover:cursor-pointer"
+      >{{ type }}</span
+    >
+  </div>
+</div>

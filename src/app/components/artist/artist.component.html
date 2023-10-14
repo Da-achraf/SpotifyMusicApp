@@ -1,0 +1,36 @@
+<div
+  *ngIf="!loading"
+  class="w-[16rem] rounded-lg shadow-2xl border-2 border-gray-300 bg-gradient-to-t from-gray-100 to-white overflow-hidden font-semibold transform transition duration-300 hover:scale-[103%] hover:border-2 hover:border-cyan-600 group"
+>
+  <ng-container *ngIf="artist.image.length != 0; else noImage">
+    <img [src]="artist.image" loading="lazy" class="bg-cover" />
+  </ng-container>
+
+  <ng-template #noImage>
+    <img src="assets/no_image.png" class="bg-cover" />
+  </ng-template>
+
+  <p class="text-[1rem] p-3 text-gray-800">{{ artist.name }}</p>
+  <div
+    class="group-hover:scale-[100%] p-3 text-[14.5px] font-sans font-['Libre Baskerville']"
+  >
+    <ng-container *ngFor="let gnere of artist.genres; let i = index">
+      <span
+        class="text-gray-800 hover:text-green-600 hover:cursor-pointer hover:underline"
+      >
+        <a [routerLink]="['/artist']">{{ gnere }}</a>
+      </span>
+      <span class="text-gray-800 text-md font-semibold">
+        {{
+          artist.genres.length > 1 && i < artist.genres.length - 1 ? " & " : ""
+        }}
+      </span>
+    </ng-container>
+  </div>
+</div>
+
+<skeleton-loader
+  [width]="16"
+  [height]="100"
+  [loading]="loading"
+></skeleton-loader>

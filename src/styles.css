@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --main-color: limegreen;
+}
+
+
+body {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  html {
+    font-family: 'Libre Baskerville', serif;
+  }
+}
+
+.black-border {
+  border: 3px solid black;
+}
+

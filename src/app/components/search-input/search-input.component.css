@@ -1,0 +1,9 @@
+
+.ng-valid {
+  border-left: 3.5px solid limegreen;
+  border-radius: 0.5rem;
+}
+.ng-invalid {
+  border-left: 3.5px solid orangered;
+  border-radius: 0.5rem;
+}

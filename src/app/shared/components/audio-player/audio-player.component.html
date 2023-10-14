@@ -1,0 +1,50 @@
+<div
+  *ngIf="(currentPlayed$ | async) as playedTrack"
+  class="relative pt-[1rem] pb-[.5rem] bg-slate-600 rounded-md"
+>
+  <div class="text-center mb-[.5rem]">
+    <div class="flex items-center text-gray-100 p-0">
+      <span class="flex-1 inline-block overflow-hidden">
+        <span [appScrollText]="playedTrack.title" class="inline-block whitespace-nowrap">
+          {{ playedTrack.title }}
+        </span>
+      </span>
+      <fa-icon
+        class="flex-1 mb-[.5rem] text-green-400 hover:cursor-pointer"
+        [size]="size"
+        (click)="toggleAudio()"
+        [icon]="faIcon"
+      ></fa-icon>
+      <span class="flex-1 inline-block overflow-hidden">
+        <span [appScrollText]="getArtists()" class="inline-block whitespace-nowrap">
+          {{ getArtists() }}
+        </span>
+      </span>
+    </div>
+  </div>
+  <span class="absolute inline-block h-1 w-full bg-slate-500"></span>
+  <span
+    [style.width.px]="playBackWidth"
+    class="absolute playBackWidth inline-block h-1 bg-green-400 transition-[width] duration-1000 ease-in-out"
+  ></span>
+</div>
+
+
+<div
+  *ngIf="(loading$ | async) && !(currentPlayed$ | async)"
+  class="relative min-h-[74.4px] pt-[1rem] pb-[.5rem] bg-slate-600 rounded-md"
+>
+  <div class="text-center mb-[.5rem]">
+    <div class="flex items-center text-gray-100 p-0">
+      <span class="flex-1 bg-gray-400 rounded-lg"></span>
+      <loading-spinner [size]="'lg'"></loading-spinner>
+      <span class="flex-1 bg-gray-400 rounded-lg"></span>
+    </div>
+  </div>
+  <span class="absolute inline-block h-1 w-full bg-slate-500"></span>
+  <span
+    [style.width.px]="playBackWidth"
+    class="absolute playBackWidth inline-block h-1 bg-green-400 transition-[width] duration-1000 ease-in-out"
+  ></span>
+</div>
+

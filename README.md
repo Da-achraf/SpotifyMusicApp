@@ -1,4 +1,5 @@
-# SpotifySearchApp
+# Spotify Music Application
+#### An angular application based on the spotify API for browsing Tracks, Artists, Albums and playing tracks previews.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
 

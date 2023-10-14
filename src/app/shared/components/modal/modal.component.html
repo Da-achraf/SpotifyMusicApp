@@ -1,0 +1,15 @@
+<div
+  #modalOverlay
+  class="min-h-[100vh] overlay flex justify-center items-center bg-red-400"
+>
+  <div
+    class="relative modal bg-green-300 max-w-[500px] flex justify-center items-center p-[2rem]"
+  >
+    <fa-icon
+      (click)="closeModal()"
+      class="absolute text-gray-500 faclose top-[1rem] right-[1rem] hover:text-gray-800 hover:cursor-pointer"
+      [icon]="faClose"
+    ></fa-icon>
+    <ng-content selector="projected-content"></ng-content>
+  </div>
+</div>

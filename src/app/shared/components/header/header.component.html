@@ -1,0 +1,42 @@
+<div
+  class="bg-transparent bg-[rgba(255, 255, 255, .2)] backdrop-blur-[3.75rem] backdrop-opacity-100 backdrop-brightness-200 shadow-md sm:bg-transparent sm:backdrop-opacity-100 sm:backdrop-brightness-100 sm:bg-[rgba(255, 255, 255, .6)] sm:backdrop-blur-[1.75rem]"
+>
+  <!-- Header container start -->
+  <div
+    #headerContainer
+    class="mx-auto flex max-w-[70rem] items-center justify-between py-2 transition-all duration-500 test sm:px-[1.5rem]"
+  >
+    <!-- Logo start -->
+    <img class="w-[7rem] h-[4rem]" src="assets/logo.png" alt="" />
+    <!-- Logo end -->
+
+    <ng-content [input-search1]></ng-content>
+
+    <!-- Icons start -->
+    <div class="flex items-center justify-center gap-6 min-w-[7rem]">
+      <a
+        #back
+        class="transition-all duration-200 ease-in-out hover:text-gray-800"
+      >
+        <fa-icon
+          class="text-gray-500 hover:cursor-pointer hover:text-gray-800"
+          size="lg"
+          [icon]="faArrowLeft"
+        ></fa-icon>
+      </a>
+      <a
+        #home
+        class="transition-all duration-200 ease-in-out hover:text-gray-800"
+        [routerLink]="['/welcoming']"
+      >
+        <fa-icon
+          class="text-gray-500 hover:cursor-pointer hover:text-gray-800"
+          size="lg"
+          [icon]="faHome"
+        ></fa-icon>
+      </a>
+    </div>
+    <!-- Icons end -->
+  </div>
+  <!-- Header container end -->
+</div>

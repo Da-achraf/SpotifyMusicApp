@@ -1,0 +1,33 @@
+<!-- <div class="flex-auto flex flex-col justify-center"> -->
+<!-- Items start -->
+<div
+  class="flex justify-center flex-wrap gap-6"
+>
+
+  <ng-container *ngIf="(items$ | async) as items">
+    <!-- if items are tracks -->
+    <ng-container *ngIf="elementToRender === 'track'">
+      <app-track
+        *ngFor="let track of items"
+        [track]="track"
+        [loading]="loading">
+      </app-track>
+    </ng-container>
+
+    <!-- if items are artists -->
+    <ng-container *ngIf="elementToRender === 'artist'">
+      <app-artist
+        *ngFor="let artist of items"
+        [artist]="artist">
+      </app-artist>
+    </ng-container>
+  </ng-container>
+</div>
+
+<!-- Items end -->
+
+<loading-spinner *ngIf="loading" [size]="loadingSpinnerSize"></loading-spinner>
+
+<error *ngIf="error"></error>
+
+<!--<ng-container *ngIf="items$ | async"></ng-container>-->
