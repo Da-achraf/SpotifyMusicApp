@@ -1,5 +1,4 @@
-import { StateManager } from 'src/app/services/state-manager.service';
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Artist } from 'src/app/models/artist.model';
 
 @Component({
@@ -7,20 +6,18 @@ import { Artist } from 'src/app/models/artist.model';
   templateUrl: './artist.component.html',
   styleUrls: ['./artist.component.css']
 })
-export class ArtistComponent {
+export class ArtistComponent implements OnInit{
 
   @Input()
   artist: Artist = new Artist({});
 
   loading: boolean = true;
-  renderImage: boolean = false;
 
   ngOnInit(): void {
-    if (this.artist) {
-      setTimeout(()=> {
-        this.loading = !this.loading;
-      }, 1500)
-    }
-
+    console.log('artist: ', this.artist);
+    setTimeout(()=> {
+      this.loading = false;
+      console.log('Loading', this.loading)
+    }, 1500)
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription, from, share, tap, shareReplay, filter} from 'rxjs';
 import { SearchInputs } from '../components/search-input/search-input.component';
 import { Track } from '../models/track.model';
+import {Artist} from "../models/artist.model";
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class StateManager {
     searchType: this.searchTypes[0],
   });
   public searchInputs$: Observable<SearchInputs> = from(this.searchInputs).pipe(
-    filter((value: SearchInputs) => value.searchTerm.length != 0 || value.searchType.length != 0),
+    // filter((value: SearchInputs) => value.searchTerm.length != 0 || value.searchType.length != 0),
     tap(() => console.log('SearchInputs$ used..'))
   );
 
@@ -32,9 +33,13 @@ export class StateManager {
 
   private selectedTrack: BehaviorSubject<Track> = new BehaviorSubject<Track>(null);
   public selectedTrack$: Observable<Track> = from(this.selectedTrack).pipe(
-    filter((value: Track) => value != null),
-    share(),
+    // filter((value: Track) => value != null),
     tap(() => console.log('selectedTrack$ used..'))
+  );
+  private selectedArtist: BehaviorSubject<Artist> = new BehaviorSubject<Artist>(null);
+  public selectedArtist$: Observable<Artist> = from(this.selectedArtist).pipe(
+    // filter((value: Track) => value != null),
+    tap(() => console.log('selectedArtist$ used..'))
   );
 
   private modalOpened: Subject<boolean> = new Subject();
@@ -63,6 +68,10 @@ export class StateManager {
   emitSelectedTrack(value: Track) {
     console.log('emitted track: ', value);
     this.selectedTrack.next(value);
+  }
+  emitSelectedArtist(value: Artist) {
+    console.log('emitted artist: ', value);
+    this.selectedArtist.next(value);
   }
 
   emitModalOpened(value: boolean) {

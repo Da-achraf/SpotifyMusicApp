@@ -1,5 +1,5 @@
 <div
-  *ngIf="(currentPlayed$ | async) as playedTrack"
+  *ngIf="(currentPlayedTrack$ | async) as playedTrack"
   class="relative pt-[1rem] pb-[.5rem] bg-slate-600 rounded-md"
 >
   <div class="text-center mb-[.5rem]">
@@ -16,8 +16,8 @@
         [icon]="faIcon"
       ></fa-icon>
       <span class="flex-1 inline-block overflow-hidden">
-        <span [appScrollText]="getArtists()" class="inline-block whitespace-nowrap">
-          {{ getArtists() }}
+        <span [appScrollText]="playedTrack.artists | formatArtists" class="inline-block whitespace-nowrap">
+          {{ playedTrack.artists | formatArtists }}
         </span>
       </span>
     </div>
@@ -31,7 +31,7 @@
 
 
 <div
-  *ngIf="(loading$ | async) && !(currentPlayed$ | async)"
+  *ngIf="(loading$ | async)"
   class="relative min-h-[74.4px] pt-[1rem] pb-[.5rem] bg-slate-600 rounded-md"
 >
   <div class="text-center mb-[.5rem]">

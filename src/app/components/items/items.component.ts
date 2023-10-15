@@ -1,35 +1,27 @@
-import {
-  Component,
-  HostBinding,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import {catchError, delay, Observable, of, Subscription, switchMap, tap} from 'rxjs';
-import { SpotifyService } from 'src/app/services/spotify.service';
-import { StateManager } from '../../services/state-manager.service';
+import {ChangeDetectionStrategy, Component, HostBinding, OnDestroy, OnInit,} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SizeProp} from '@fortawesome/fontawesome-svg-core';
+import {BehaviorSubject, catchError, delay, filter, Observable, of, share, switchMap, tap} from 'rxjs';
+import {SpotifyService} from 'src/app/services/spotify.service';
+import {StateManager} from '../../services/state-manager.service';
+
 @Component({
   selector: 'items',
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemsComponent implements OnInit, OnDestroy {
-  items: any[] = [];
-  elementToRender: string = '';
 
-  loading: boolean = false;
-  error: boolean = false;
-  welcoming: boolean = true;
+  items$: Observable<any> = this.getItems();
+  elementToRender$ = new BehaviorSubject<string>('');
 
-  // isModalOpened: boolean = false;
+  loading$ = new BehaviorSubject<boolean>(false);
+  error$ = new BehaviorSubject<boolean>(false);
+  welcoming$ = new BehaviorSubject<boolean>(false);
 
   loadingSpinnerSize: SizeProp = 'xl';
 
-  items$: Observable<any> = this.getSearchInputs();
-
-  subscriptions: Subscription[] = [];
-  count: number = 0;
   constructor(
     private spotifyService: SpotifyService,
     private stateManager: StateManager,
@@ -50,11 +42,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
   /*
    *
    * Get search inputs emitted from the search inputs component.
-   * If search inputs were valid => Launch the search.
+   * If search inputs were valid => use them in a new observable to get the items (switchMap).
    * Else => return to the welcoming page
    *
    */
-  getSearchInputs() {
+  getItems() {
     return this.stateManager.searchInputs$.pipe(
         switchMap(value => {
           if (!value.searchTerm || !value.searchType) {
@@ -62,64 +54,56 @@ export class ItemsComponent implements OnInit, OnDestroy {
             return of(null);
           }
           else {
-            console.log(value);
+            // Use the search inputs(searchTerm, searchType) in async req
+            // to get the items (tracks, artists or albums...) according to searchType
             return this.spotifyService
                 .search(value.searchType.toLowerCase(), value.searchTerm).pipe(
-                    catchError((err, caught) => {
-                      if (err.status != 401){
-                        this.onError();
-                        return of(null)
-                      }
-                      else return caught
+                    catchError(err => {
+                      if (err.status === 401) this.onError();
+                      return of(null)
                     }),
+                    filter(value => value != null),
                     tap(() => this.onSearchBegin()),
-                    delay(700),
-                    tap(() => this.elementToRender = value.searchType.toLowerCase()),
-                    tap(() => this.onItemsFetched()),
+                    delay(1000),
+                    tap(() => {
+                      this.elementToRender$.next(value.searchType.toLowerCase());
+                      this.onItemsFetched();
+                    }),
                 )
           }
         }),
-        tap(value => console.log(value))
     )
   }
 
   onItemsFetched() {
-    this.loading = false;
-    this.welcoming = false;
-    this.error = false;
+    this.loading$.next(false);
+    this.welcoming$.next(false);
+    this.error$.next(false);
   }
 
   onSearchBegin() {
-    this.elementToRender = '';
-    this.loading = true;
-    this.welcoming = false;
-    this.error = false;
+    this.elementToRender$.next('');
+    this.loading$.next(true);
+    this.welcoming$.next(false);
+    this.error$.next(false);
   }
 
   onError() {
-    this.error = true;
-    this.loading = false;
-    this.welcoming = false;
+    this.error$.next(true);
+    this.loading$.next(false);
+    this.welcoming$.next(false);
   }
+
+  onRefresh(){
+    this.error$.next(false);
+    this.items$ = this.getItems();
+  }
+
 
   emitCurrentRoutePath() {
     let currentPath = this.activatedRoute.snapshot.url[0].path;
     this.stateManager.emitCurrentRoutePath(currentPath);
   }
 
-  onModalOpened() {
-    let isModalOpened = false;
-    this.stateManager.modalOpened$.subscribe((value: boolean) => {
-      isModalOpened = value;
-    });
-    return isModalOpened;
-  }
-
-  unSubscribe() {
-    this.subscriptions.forEach((item: Subscription) => item.unsubscribe());
-  }
-
-  ngOnDestroy(): void {
-    this.unSubscribe();
-  }
+  ngOnDestroy(): void {}
 }

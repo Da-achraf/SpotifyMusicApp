@@ -7,8 +7,10 @@
     'border-2 scale-[103%] border-green-300': track.isPreviewVisible
   }"
 >
-  <img [src]="track.cover" loading="lazy" class="bg-cover" />
-  <p class="group-hover:scale-[100%] text-[1rem] p-3 text-gray-800">
+  <img [src]="track.cover" loading="lazy" class="bg-cover"  alt="Track Cover"/>
+  <p
+    (click)="onViewTrack($event)"
+    class="group-hover:scale-[100%] text-[1rem] p-3 text-gray-800">
     {{ track.title }}
   </p>
   <div
@@ -19,21 +21,20 @@
       *ngFor="let artist of track.artists; let i = index"
     >
       <span
-        (click)="onViewArtist($event)"
+        (click)="onViewArtist($event, artist)"
         class="hover:text-green-600 hover:cursor-pointer hover:underline"
       >
-        <a *ngIf="formatArtist(artist.name, i).length != 0" class="block">{{
-          formatArtist(artist.name, i)
-        }}</a>
+        <a class="block" *ngIf="i <= 2">{{ artist.name }}</a>
       </span>
     </span>
+      <span class="block font-bold text-xl" *ngIf="track.artists.length > 3">. . .</span>
   </div>
 </div>
 
 <!-- Skeleton loader for the track -->
-<skeleton-loader
-   *ngIf="loading"
-  [width]="16"
-  [height]="100"
-  [loading]="loading"
-></skeleton-loader>
+<!--<skeleton-loader-->
+<!--   *ngIf="loading"-->
+<!--  [width]="16"-->
+<!--  [height]="100"-->
+<!--  [loading]="loading"-->
+<!--&gt;</skeleton-loader>-->

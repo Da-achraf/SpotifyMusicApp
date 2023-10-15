@@ -22,10 +22,16 @@
   </ng-container>
 </div>
 
-<modal>
-  <div class="projected-content">
-    <ng-container *ngIf="selectedTrack$ | async as selectedTrack">
-      <app-track [track]="selectedTrack"></app-track>
-    </ng-container>
-  </div>
+<modal *ngIf="(modalOpened$ | async) as modalOpened" [modalOpened]="modalOpened">
+  <ng-container *ngIf="selectedTrack$ | async as selectedTrack">
+    <div class="projected-content">
+        <app-track [track]="selectedTrack"></app-track>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="selectedArtist$ | async as selectedArtist">
+    <div class="projected-content">
+        <app-artist [artist]="selectedArtist"></app-artist>
+    </div>
+  </ng-container>
 </modal>

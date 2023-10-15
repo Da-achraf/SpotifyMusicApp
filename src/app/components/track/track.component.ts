@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Track } from 'src/app/models/track.model';
 import { StateManager } from 'src/app/services/state-manager.service';
+import {Artist} from "../../models/artist.model";
 
 @Component({
   selector: 'app-track',
@@ -29,36 +30,23 @@ export class TrackComponent implements OnInit, AfterViewInit {
 
   onPreview() {
     this.track.isPreviewVisible = true;
-    this.stateManager.emitPlayedTrack(this.track);
-    console.log('played track emitted from track component: ', this.track);
+    if (this.track.previewUrl?.length != 0){
+      this.stateManager.emitPlayedTrack(this.track);
+      console.log('played track emitted from track component: ', this.track);
+    }
   }
 
-  onViewArtist(event: Event) {
+  onViewArtist(event: Event, artist: Artist) {
     event.stopPropagation();
-    console.log('view artsit triggered: ', this.track.title);
+    console.log('view artist triggered: ', artist);
+    this.stateManager.emitSelectedArtist(artist);
+    this.stateManager.emitModalOpened(true);
+  }
+  onViewTrack(event: Event) {
+    event.stopPropagation();
+    console.log('view artist triggered: ', this.track.title);
     this.stateManager.emitSelectedTrack(this.track);
     this.stateManager.emitModalOpened(true);
   }
 
-
-  // getArtists() {
-  //   const artists = this.track.artists;
-  //   let formattedArtists: string = '';
-  //   for (let i = 0; i < artists.length; i++) {
-  //     if (i == artists.length) {
-  //       formattedArtists += artists[i].name;
-  //     } else {
-  //       formattedArtists += artists[i].name + ' & ';
-  //     }
-  //   }
-  //
-  //   return formattedArtists;
-  // }
-
-  formatArtist(artistName: string, index: number) {
-    const artistsCount = this.track.artists.length;
-    if (artistsCount <= 3) return artistName;
-    if (index == 3) return 'And Others...';
-    else return '';
-  }
 }

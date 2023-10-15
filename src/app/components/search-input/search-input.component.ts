@@ -16,6 +16,7 @@ import {UtilsService} from 'src/app/services/utils.service';
   selector: 'app-search-input',
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
   @ViewChild('searchInputContainer') searchInputContainer:
@@ -71,7 +72,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     if (this.searchInputs.searchTerm.length != 0) this.onEmitSearchInputs();
   }
 
-  onToggleDropDown(event) {
+  onToggleDropDown(event: Event) {
     event.stopPropagation();
     this.isDropDownOpened = !this.isDropDownOpened;
   }

@@ -26,17 +26,34 @@ export class UtilsService {
     return true;
   }
 
-  getArtists(track: Track) {
-    const artists = track.artists;
-    let formattedArtists: string = '';
-    for (let i = 0; i < artists.length; i++) {
-      if (i == artists.length) {
-        formattedArtists += artists[i].name;
-      } else {
-        formattedArtists += artists[i].name + ' & ';
-      }
-    }
+  getArtists(artists: Artist[]) {
+    return  artists.map((artist: Artist) => artist.name).join(' & ')
+  }
 
-    return formattedArtists;
+  buildArtistObject(item: any): Artist{
+    return new Artist({
+      id: item.id,
+      name: item.name,
+      image: item.images.length != 0 ? item.images[0].url : '',
+      followers: item.followers.total,
+      genres: item.genres,
+      popularity: item.popularity,
+    })
+  }
+
+  buildTrackObject(item: any): Track{
+    return new Track({
+      id: item.id,
+      title: item.name,
+      artists: item.artists.map((artist: any) => {
+        return new Artist({
+          id: artist.id,
+          name: artist.name,
+        });
+      }),
+      cover:
+          item.album.images.length != 0 ? item.album.images[0].url : '',
+      previewUrl: item.preview_url,
+    })
   }
 }

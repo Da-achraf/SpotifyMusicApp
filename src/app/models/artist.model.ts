@@ -13,6 +13,6 @@ export class Artist {
     this.followers = obj.followers;
     this.genres = obj.genres;
     this.popularity = obj.popularity;
-
   }
+
 }

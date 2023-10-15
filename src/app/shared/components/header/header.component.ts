@@ -1,18 +1,13 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { faArrowLeft, faHome } from '@fortawesome/free-solid-svg-icons';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild,} from '@angular/core';
+import {faArrowLeft, faHome} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements AfterViewInit {
   @ViewChild('headerContainer', { read: ElementRef })
   headerContainer: ElementRef<HTMLElement>;
 
@@ -26,10 +21,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   faHome = faHome;
   faArrowLeft = faArrowLeft;
 
-  ngOnInit(): void {}
-
   ngAfterViewInit(): void {
-    this.headerContentPostioningOnScroll();
+    // this.headerContentPositioningOnScroll();
 
     this.home.nativeElement.addEventListener('click', (event) =>
       this.homeClicked()
@@ -40,17 +33,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     );
   }
 
-  headerContentPostioningOnScroll() {
-    window.addEventListener('scroll', (event) => {
-      const scrollY = window.scrollY;
-      if (scrollY > 15) {
-        this.headerContainer.nativeElement.classList.remove('max-w-[70rem]');
-        this.headerContainer.nativeElement.style.maxWidth = '100%';
-      } else {
-        this.headerContainer.nativeElement.style.maxWidth = '70rem';
-      }
-    });
-  }
+  // headerContentPositioningOnScroll() {
+  //   window.addEventListener('scroll', (event) => {
+  //     const scrollY = window.scrollY;
+  //     if (scrollY > 15) {
+  //       this.headerContainer.nativeElement.classList.remove('max-w-[70rem]');
+  //       this.headerContainer.nativeElement.style.maxWidth = '100%';
+  //     } else {
+  //       this.headerContainer.nativeElement.style.maxWidth = '70rem';
+  //     }
+  //   });
+  // }
 
   homeClicked() {
     this.home.nativeElement.style.transform = 'scale(1.1)';
